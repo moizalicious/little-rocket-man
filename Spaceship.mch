@@ -14,12 +14,12 @@ SETS
     MOVEMENT_MESSAGE = {movement_successful, movement_failed}
         
 // declaration of constants
-//CONSTANTS
-  //  SPACE
+CONSTANTS
+    SPACE
     
 // declaration of the properties the machine’s sets & constants must satisfy
-//PROPERTIES
-    //SPACE : NAT1 <-> NAT1
+PROPERTIES
+    SPACE : 1..12 <-> 1..7
     
 // declaration of variables
 VARIABLES
@@ -32,12 +32,9 @@ VARIABLES
 // declaration of invariant properties of the variables
 INVARIANT
     //position : SPACE &
-    positionX : NAT1 & 1 <= positionX & positionX <= 12
-    & 
-    positionY : NAT1 & 1 <= positionY & positionY <= 7
-    &
-    power : NAT1 & power >= 0
-    &
+    positionX : 1..12 & 
+    positionY : 1..7 &
+    power : 0..50 &
     game_status : GAME_STATUS
     
 // initialisation of all variables
@@ -55,7 +52,7 @@ OPERATIONS
             currentPosition := (positionX, positionY)
         END;*/
     
-    outcome <-- moveUp = 
+    outcome <-- MoveUp = 
         PRE
             game_status = playing
         THEN
@@ -71,7 +68,7 @@ OPERATIONS
             END
         END;        
     
-    outcome <-- moveDown = 
+    outcome <-- MoveDown = 
         PRE
             game_status = playing
         THEN
@@ -87,7 +84,7 @@ OPERATIONS
             END            
         END;
     
-    outcome <-- moveForward = 
+    outcome <-- MoveForward = 
         PRE
             game_status = playing
         THEN
@@ -103,7 +100,7 @@ OPERATIONS
             END            
         END;
         
-    outcome <-- moveBackward = 
+    outcome <-- MoveBackward = 
         PRE
             game_status = playing
         THEN
@@ -117,6 +114,22 @@ OPERATIONS
                 power := power - 5 ||
                 outcome := movement_successful
             END            
-        END
+        END;
+    
+    outcome <-- EngageWarpDrive(xx, yy) =
+        PRE
+            game_status = playing &
+            xx : 1..12 &
+            yy : 1..7
+        THEN
+            IF (power < 20) THEN
+                outcome := movement_failed
+            ELSE            
+                positionX := xx ||
+                positionY := yy ||
+                power := power - 20 ||
+                outcome := movement_successful
+            END            
+        END        
     
 END
