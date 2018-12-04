@@ -45,7 +45,7 @@ INITIALISATION
     //position := (1 |-> 1)
     positionX := 1 ||
     positionY := 1 ||
-    power := 10 ||
+    power := 50 ||
     game_status := playing
     
 // declaration of the operations in the form of an interface (header) & body
@@ -59,32 +59,28 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (game_status = won or game_status = lost) THEN
-                outcome := movement_failed
-             ELSIF (power < 5) THEN
-                game_status := lost ||             
-                outcome := movement_failed
+            IF (power < 5) THEN
+                outcome := movement_failed ||
+                game_status := lost
             ELSIF (positionY = 7) THEN
                 outcome := movement_failed
-            ELSE            
+            ELSE
                 positionY := positionY + 1 ||
                 power := power - 5 ||
-                outcome := movement_successful
-            END            
+                outcome := movement_successful             
+            END
         END;        
     
     outcome <-- moveDown = 
         PRE
             game_status = playing
         THEN
-            IF (game_status = won or game_status = lost) THEN
-                outcome := movement_failed
-             ELSIF (power < 5) THEN
-                game_status := lost ||             
-                outcome := movement_failed
+            IF (power < 5) THEN
+                outcome := movement_failed ||
+                game_status := lost
             ELSIF (positionY = 1) THEN
                 outcome := movement_failed
-            ELSE            
+            ELSE
                 positionY := positionY - 1 ||
                 power := power - 5 ||
                 outcome := movement_successful
@@ -95,14 +91,12 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (game_status = won or game_status = lost) THEN
-                outcome := movement_failed
-             ELSIF (power < 5) THEN
-                game_status := lost ||             
-                outcome := movement_failed
+            IF (power < 5) THEN
+                outcome := movement_failed ||
+                game_status := lost
             ELSIF (positionX = 12) THEN
                 outcome := movement_failed
-            ELSE            
+            ELSE
                 positionX := positionX + 1 ||
                 power := power - 5 ||
                 outcome := movement_successful
@@ -113,14 +107,12 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (game_status = won or game_status = lost) THEN
-                outcome := movement_failed
-             ELSIF (power < 5) THEN
-                game_status := lost ||             
-                outcome := movement_failed
+            IF (power < 5) THEN
+                outcome := movement_failed ||
+                game_status := lost
             ELSIF (positionX = 1) THEN
                 outcome := movement_failed
-            ELSE            
+            ELSE
                 positionX := positionX - 1 ||
                 power := power - 5 ||
                 outcome := movement_successful
