@@ -15,11 +15,32 @@ SETS
         
 // declaration of constants
 CONSTANTS
-    SPACE
+    space,
+    asteroids
     
 // declaration of the properties the machine’s sets & constants must satisfy
 PROPERTIES
-    SPACE : 1..12 <-> 1..7
+    space : 1..12 <-> 1..7 &
+    space : {{
+                (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),
+                (2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),
+                (3,1),(3,2),(3,3),(3,4),(3,5),(3,6),(3,7),
+                (4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),
+                (5,1),(5,2),(5,3),(5,4),(5,5),(5,6),(5,7),
+                (6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7),
+                (7,1),(7,2),(7,3),(7,4),(7,5),(7,6),(7,7),
+                (8,1),(8,2),(8,3),(8,4),(8,5),(8,6),(8,7),
+                (9,1),(9,2),(9,3),(9,4),(9,5),(9,6),(9,7),
+                (10,1),(10,2),(10,3),(10,4),(10,5),(10,6),(10,7),
+                (11,1),(11,2),(11,3),(11,4),(11,5),(11,6),(11,7),
+                (12,1),(12,2),(12,3),(12,4),(12,5),(12,6),(12,7)
+            }} 
+    &
+    asteroids <: space &
+    asteroids : {{
+                    (7,1),(3,2),(11,2),(8,3),(5,4),(3,5),
+                    (7,5),(12,5),(10,6),(6,7),(7,7)    
+                }}
     
 // declaration of variables
 VARIABLES
@@ -27,23 +48,26 @@ VARIABLES
     positionX,
     positionY,
     power,
-    game_status
+    game_status,
+    starbase
         
 // declaration of invariant properties of the variables
 INVARIANT
     //position : SPACE &
-    positionX : 1..12 & 
-    positionY : 1..7 &
-    power : 0..50 &
-    game_status : GAME_STATUS
+    positionX : dom(space) & 
+    positionY : ran(space) &
+    power : 0..200 &
+    game_status : GAME_STATUS &
+    starbase : space
     
 // initialisation of all variables
 INITIALISATION
     //position := (1 |-> 1)
-    positionX := 1 ||
-    positionY := 1 ||
-    power := 50 ||
-    game_status := playing
+    positionX := min(dom(space)) ||
+    positionY := min(ran(space)) ||
+    power := 200 ||
+    game_status := playing ||
+    starbase := (6, 4)
     
 // declaration of the operations in the form of an interface (header) & body
 OPERATIONS
@@ -59,9 +83,11 @@ OPERATIONS
             IF (power < 5) THEN
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionY = 7) THEN
+            ELSIF (positionY = max(ran(space))) THEN
                 outcome := movement_failed
             ELSE
+                // TODO Check if won, lost or still playing in this block.
+                // TODO check if hit asteroid or not
                 positionY := positionY + 1 ||
                 power := power - 5 ||
                 outcome := movement_successful             
@@ -75,7 +101,7 @@ OPERATIONS
             IF (power < 5) THEN
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionY = 1) THEN
+            ELSIF (positionY = min(ran(space))) THEN
                 outcome := movement_failed
             ELSE
                 positionY := positionY - 1 ||
@@ -91,7 +117,7 @@ OPERATIONS
             IF (power < 5) THEN
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionX = 12) THEN
+            ELSIF (positionX = max(dom(space))) THEN
                 outcome := movement_failed
             ELSE
                 positionX := positionX + 1 ||
@@ -107,7 +133,7 @@ OPERATIONS
             IF (power < 5) THEN
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionX = 1) THEN
+            ELSIF (positionX = min(dom(space))) THEN
                 outcome := movement_failed
             ELSE
                 positionX := positionX - 1 ||
@@ -119,8 +145,9 @@ OPERATIONS
     outcome <-- EngageWarpDrive(xx, yy) =
         PRE
             game_status = playing &
-            xx : 1..12 &
-            yy : 1..7
+            xx : dom(space) &
+            yy : ran(space) &
+            (xx, yy) /= starbase
         THEN
             IF (power < 20) THEN
                 outcome := movement_failed
