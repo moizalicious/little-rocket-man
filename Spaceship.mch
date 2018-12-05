@@ -65,7 +65,7 @@ INITIALISATION
     //position := (1 |-> 1)
     positionX := min(dom(space)) ||
     positionY := min(ran(space)) ||
-    power := 200 ||
+    power := 50 ||
     game_status := playing ||
     starbase := (6, 4)
     
@@ -80,33 +80,75 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (power < 5) THEN
+            IF (positionY = max(ran(space))) THEN
+                outcome := movement_failed
+            ELSIF ((positionX, positionY + 1) : asteroids) THEN
+                IF (power > 10) THEN
+                    power := power - 10 ||
+                    outcome := movement_failed
+                ELSE
+                    power := 0 ||
+                    outcome := movement_failed ||
+                    game_status := lost
+                END                
+            ELSIF (power >= 5) THEN
+                IF ((positionX, positionY + 1) = starbase) THEN
+                    positionY := positionY + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := won
+                ELSIF (power = 5) THEN
+                    positionY := positionY + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := lost
+                ELSE
+                    positionY := positionY + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful
+                END                
+            ELSE
+                power := 0 ||
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionY = max(ran(space))) THEN
-                outcome := movement_failed
-            ELSE
-                // TODO Check if won, lost or still playing in this block.
-                // TODO check if hit asteroid or not
-                positionY := positionY + 1 ||
-                power := power - 5 ||
-                outcome := movement_successful             
-            END
+            END            
         END;        
     
     outcome <-- MoveDown = 
         PRE
             game_status = playing
         THEN
-            IF (power < 5) THEN
+            IF (positionY = min(ran(space))) THEN
+                outcome := movement_failed
+            ELSIF ((positionX, positionY - 1) : asteroids) THEN
+                IF (power > 10) THEN
+                    power := power - 10 ||
+                    outcome := movement_failed
+                ELSE
+                    power := 0 ||
+                    outcome := movement_failed ||
+                    game_status := lost
+                END                
+            ELSIF (power >= 5) THEN
+                IF ((positionX, positionY - 1) = starbase) THEN
+                    positionY := positionY - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := won
+                ELSIF (power = 5) THEN
+                    positionY := positionY - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := lost
+                ELSE
+                    positionY := positionY - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful
+                END                
+            ELSE
+                power := 0 ||
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionY = min(ran(space))) THEN
-                outcome := movement_failed
-            ELSE
-                positionY := positionY - 1 ||
-                power := power - 5 ||
-                outcome := movement_successful
             END            
         END;
     
@@ -114,15 +156,37 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (power < 5) THEN
+            IF (positionX = max(dom(space))) THEN
+                outcome := movement_failed
+            ELSIF ((positionX + 1, positionY) : asteroids) THEN
+                IF (power > 10) THEN
+                    power := power - 10 ||
+                    outcome := movement_failed
+                ELSE
+                    power := 0 ||
+                    outcome := movement_failed ||
+                    game_status := lost
+                END                
+            ELSIF (power >= 5) THEN
+                IF ((positionX + 1, positionY) = starbase) THEN
+                    positionX := positionX + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := won
+                ELSIF (power = 5) THEN
+                    positionX := positionX + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := lost
+                ELSE
+                    positionX := positionX + 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful
+                END                
+            ELSE
+                power := 0 ||
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionX = max(dom(space))) THEN
-                outcome := movement_failed
-            ELSE
-                positionX := positionX + 1 ||
-                power := power - 5 ||
-                outcome := movement_successful
             END            
         END;
         
@@ -130,18 +194,40 @@ OPERATIONS
         PRE
             game_status = playing
         THEN
-            IF (power < 5) THEN
+            IF (positionX = min(dom(space))) THEN
+                outcome := movement_failed
+            ELSIF ((positionX - 1, positionY) : asteroids) THEN
+                IF (power > 10) THEN
+                    power := power - 10 ||
+                    outcome := movement_failed
+                ELSE
+                    power := 0 ||
+                    outcome := movement_failed ||
+                    game_status := lost
+                END                
+            ELSIF (power >= 5) THEN
+                IF ((positionX - 1, positionY) = starbase) THEN
+                    positionX := positionX - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := won
+                ELSIF (power = 5) THEN
+                    positionX := positionX - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful ||
+                    game_status := lost
+                ELSE
+                    positionX := positionX - 1 ||
+                    power := power - 5 ||
+                    outcome := movement_successful
+                END                
+            ELSE
+                power := 0 ||
                 outcome := movement_failed ||
                 game_status := lost
-            ELSIF (positionX = min(dom(space))) THEN
-                outcome := movement_failed
-            ELSE
-                positionX := positionX - 1 ||
-                power := power - 5 ||
-                outcome := movement_successful
             END            
         END;
-    
+
     outcome <-- EngageWarpDrive(xx, yy) =
         PRE
             game_status = playing &
@@ -149,14 +235,17 @@ OPERATIONS
             yy : ran(space) &
             (xx, yy) /= starbase
         THEN
-            IF (power < 20) THEN
+            IF (power > 20) THEN
+                IF ((xx, yy) : asteroids) THEN
+                    outcome := movement_failed
+                ELSE
+                    power := power - 20 ||
+                    positionX := xx ||
+                    positionY := yy ||
+                    outcome := movement_successful
+                END                
+            ELSE 
                 outcome := movement_failed
-            ELSE            
-                positionX := xx ||
-                positionY := yy ||
-                power := power - 20 ||
-                outcome := movement_successful
             END            
         END        
-    
 END
