@@ -13,7 +13,7 @@ SETS
     GAME_STATUS = {playing, won, lost};
     MOVEMENT_MESSAGE = {movement_successful, movement_failed};
     ERROR_MESSAGE = {no_error, insufficient_power, out_of_bounds, 
-                    asteroid_hit, asteroid_occupied}
+                    asteroid_hit, asteroid_occupied}           
     
 // declaration of constants
 CONSTANTS
@@ -52,7 +52,10 @@ VARIABLES
     power,
     asteroid_collisions,
     game_status,
-    starbase
+    starbase,
+    
+    moves_completed,
+    mission_route
         
 // declaration of invariant properties of the variables
 INVARIANT
@@ -60,9 +63,12 @@ INVARIANT
     positionX : dom(space) & 
     positionY : ran(space) &
     power : 0..200 &
-    asteroid_collisions : NAT1 &
+    asteroid_collisions : 0..100 &
     game_status : GAME_STATUS &
-    starbase : space
+    starbase : space &
+    
+    moves_completed : 1..200 &
+    mission_route : 1..200 +-> space
     
 // initialisation of all variables
 INITIALISATION
@@ -72,7 +78,10 @@ INITIALISATION
     power := 200 ||
     asteroid_collisions := 0 ||
     game_status := playing ||
-    starbase := (6, 4)
+    starbase := (6, 4) ||
+    
+    moves_completed := 1 ||
+    mission_route := {1} * {(1,1)}
     
 // declaration of the operations in the form of an interface (header) & body
 OPERATIONS
@@ -84,8 +93,6 @@ OPERATIONS
     outcome, error <-- MoveUp = 
         PRE
             game_status = playing
-            // TODO check this and add if needed
-            //power >= 5
         THEN
             IF (positionY = max(ran(space))) THEN
                 outcome := movement_failed ||
@@ -109,18 +116,30 @@ OPERATIONS
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := won
+                    game_status := won ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1
+                    
                 ELSIF (power = 5) THEN
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := lost
+                    game_status := lost ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1
+                    
                 ELSE
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
-                    error := no_error
+                    error := no_error ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1
+                    
                 END                
             ELSE
                 power := 0 ||
@@ -156,18 +175,30 @@ OPERATIONS
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := won
+                    game_status := won ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1
+                    
                 ELSIF (power = 5) THEN
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := lost
+                    game_status := lost ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1
+
                 ELSE
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
-                    error := no_error
+                    error := no_error ||
+                    
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1                
+                    
                 END                
             ELSE
                 power := 0 ||
@@ -203,18 +234,30 @@ OPERATIONS
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := won
+                    game_status := won ||
+                    
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 ELSIF (power = 5) THEN
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := lost
+                    game_status := lost ||
+                    
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 ELSE
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
-                    error := no_error
+                    error := no_error ||
+                    
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 END                
             ELSE
                 power := 0 ||
@@ -250,18 +293,30 @@ OPERATIONS
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := won
+                    game_status := won ||
+                    
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 ELSIF (power = 5) THEN
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    game_status := lost
+                    game_status := lost ||
+                    
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 ELSE
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
-                    error := no_error
+                    error := no_error ||
+                    
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                
+                    
                 END                
             ELSE
                 power := 0 ||
@@ -287,7 +342,11 @@ OPERATIONS
                     positionX := xx ||
                     positionY := yy ||
                     outcome := movement_successful ||
-                    error := no_error
+                    error := no_error ||
+                    
+                    mission_route(moves_completed + 1) := (xx, yy) ||
+                    moves_completed := moves_completed + 1
+                    
                 END                
             ELSE 
                 outcome := movement_failed ||
@@ -300,6 +359,25 @@ OPERATIONS
             currentLocation := (positionX, positionY) ||
             currentPower := power ||
             asteroidCollisions := asteroid_collisions
+        END;        
+    
+    missionRoute <-- MissionRoute =
+        BEGIN
+            missionRoute := mission_route
+        END;        
+    
+    answer <-- DockedAtStarbase =
+        BEGIN
+            IF ((positionX, positionY) = starbase) THEN
+                answer := TRUE
+            ELSE
+                answer := FALSE
+            END            
+        END;        
+        
+    gameStatus <-- GameStatus = 
+        BEGIN
+            gameStatus := game_status
         END        
     
 END
