@@ -43,7 +43,7 @@ PROPERTIES
                     (7,1),(3,2),(11,2),(8,3),(5,4),(3,5),
                     (7,5),(12,5),(10,6),(6,7),(7,7)    
                 }}
-    
+
 // declaration of variables
 VARIABLES
     //position,
