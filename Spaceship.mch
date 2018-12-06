@@ -11,8 +11,10 @@ MACHINE Spaceship
 // declaration of deferred & enumerated sets
 SETS
     GAME_STATUS = {playing, won, lost};
-    MOVEMENT_MESSAGE = {movement_successful, movement_failed}
-        
+    MOVEMENT_MESSAGE = {movement_successful, movement_failed};
+    ERROR_MESSAGE = {no_error, insufficient_power, out_of_bounds, 
+                    asteroid_hit, asteroid_occupied}
+    
 // declaration of constants
 CONSTANTS
     space,
@@ -48,6 +50,7 @@ VARIABLES
     positionX,
     positionY,
     power,
+    asteroid_collisions,
     game_status,
     starbase
         
@@ -57,6 +60,7 @@ INVARIANT
     positionX : dom(space) & 
     positionY : ran(space) &
     power : 0..200 &
+    asteroid_collisions : NAT1 &
     game_status : GAME_STATUS &
     starbase : space
     
@@ -65,7 +69,8 @@ INITIALISATION
     //position := (1 |-> 1)
     positionX := min(dom(space)) ||
     positionY := min(ran(space)) ||
-    power := 50 ||
+    power := 200 ||
+    asteroid_collisions := 0 ||
     game_status := playing ||
     starbase := (6, 4)
     
@@ -76,19 +81,26 @@ OPERATIONS
             currentPosition := (positionX, positionY)
         END;*/
     
-    outcome <-- MoveUp = 
+    outcome, error <-- MoveUp = 
         PRE
             game_status = playing
+            // TODO check this and add if needed
+            //power >= 5
         THEN
             IF (positionY = max(ran(space))) THEN
-                outcome := movement_failed
+                outcome := movement_failed ||
+                error := out_of_bounds
             ELSIF ((positionX, positionY + 1) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
-                    outcome := movement_failed
+                    outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     game_status := lost
                 END                
             ELSIF (power >= 5) THEN
@@ -96,37 +108,46 @@ OPERATIONS
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := won
                 ELSIF (power = 5) THEN
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := lost
                 ELSE
                     positionY := positionY + 1 ||
                     power := power - 5 ||
-                    outcome := movement_successful
+                    outcome := movement_successful ||
+                    error := no_error
                 END                
             ELSE
                 power := 0 ||
                 outcome := movement_failed ||
+                error := insufficient_power ||
                 game_status := lost
             END            
         END;        
     
-    outcome <-- MoveDown = 
+    outcome, error <-- MoveDown = 
         PRE
             game_status = playing
         THEN
             IF (positionY = min(ran(space))) THEN
-                outcome := movement_failed
+                outcome := movement_failed ||
+                error := out_of_bounds
             ELSIF ((positionX, positionY - 1) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
-                    outcome := movement_failed
+                    outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     game_status := lost
                 END                
             ELSIF (power >= 5) THEN
@@ -134,37 +155,46 @@ OPERATIONS
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := won
                 ELSIF (power = 5) THEN
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := lost
                 ELSE
                     positionY := positionY - 1 ||
                     power := power - 5 ||
-                    outcome := movement_successful
+                    outcome := movement_successful ||
+                    error := no_error
                 END                
             ELSE
                 power := 0 ||
                 outcome := movement_failed ||
+                error := insufficient_power ||
                 game_status := lost
             END            
         END;
     
-    outcome <-- MoveForward = 
+    outcome, error <-- MoveForward = 
         PRE
             game_status = playing
         THEN
             IF (positionX = max(dom(space))) THEN
-                outcome := movement_failed
+                outcome := movement_failed ||
+                error := out_of_bounds
             ELSIF ((positionX + 1, positionY) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
-                    outcome := movement_failed
+                    outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     game_status := lost
                 END                
             ELSIF (power >= 5) THEN
@@ -172,37 +202,46 @@ OPERATIONS
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := won
                 ELSIF (power = 5) THEN
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := lost
                 ELSE
                     positionX := positionX + 1 ||
                     power := power - 5 ||
-                    outcome := movement_successful
+                    outcome := movement_successful ||
+                    error := no_error
                 END                
             ELSE
                 power := 0 ||
                 outcome := movement_failed ||
+                error := insufficient_power ||
                 game_status := lost
             END            
         END;
         
-    outcome <-- MoveBackward = 
+    outcome, error <-- MoveBackward = 
         PRE
             game_status = playing
         THEN
             IF (positionX = min(dom(space))) THEN
-                outcome := movement_failed
+                outcome := movement_failed ||
+                error := out_of_bounds
             ELSIF ((positionX - 1, positionY) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
-                    outcome := movement_failed
+                    outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
+                    error := asteroid_hit ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     game_status := lost
                 END                
             ELSIF (power >= 5) THEN
@@ -210,25 +249,29 @@ OPERATIONS
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := won
                 ELSIF (power = 5) THEN
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
+                    error := no_error ||
                     game_status := lost
                 ELSE
                     positionX := positionX - 1 ||
                     power := power - 5 ||
-                    outcome := movement_successful
+                    outcome := movement_successful ||
+                    error := no_error
                 END                
             ELSE
                 power := 0 ||
                 outcome := movement_failed ||
+                error := insufficient_power ||
                 game_status := lost
             END            
         END;
 
-    outcome <-- EngageWarpDrive(xx, yy) =
+    outcome, error <-- EngageWarpDrive(xx, yy) =
         PRE
             game_status = playing &
             xx : dom(space) &
@@ -237,15 +280,26 @@ OPERATIONS
         THEN
             IF (power > 20) THEN
                 IF ((xx, yy) : asteroids) THEN
-                    outcome := movement_failed
+                    outcome := movement_failed ||
+                    error := asteroid_occupied
                 ELSE
                     power := power - 20 ||
                     positionX := xx ||
                     positionY := yy ||
-                    outcome := movement_successful
+                    outcome := movement_successful ||
+                    error := no_error
                 END                
             ELSE 
-                outcome := movement_failed
+                outcome := movement_failed ||
+                error := insufficient_power
             END            
+        END;  
+    
+    currentLocation, currentPower, asteroidCollisions <-- MissionStatus =
+        BEGIN
+            currentLocation := (positionX, positionY) ||
+            currentPower := power ||
+            asteroidCollisions := asteroid_collisions
         END        
+    
 END
