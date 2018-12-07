@@ -1,6 +1,9 @@
 digraph {
+Asteroids [ label=" Asteroids " shape= box ]
 GameInfo [ label=" GameInfo " shape= box ]
+Mission [ label=" Mission " shape= box ]
 Space [ label=" Space " shape= box ]
 Spaceship [ label=" Spaceship " shape= box ]
+Test [ label=" Test " shape= box ]
 
 }
