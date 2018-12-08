@@ -4,7 +4,7 @@
  */
 
 MACHINE Spaceship INCLUDES RouteTracker, CollisionTracker, GameInfo 
-    PROMOTES GameStatus, MissionRoute
+    PROMOTES MissionRoute, GameStatus
 
 SETS
     MOVEMENT_MESSAGE = {movement_successful, movement_failed};
