@@ -4,23 +4,23 @@
     <project decomp_dir="/home/moiz/Source/little_rocket_man/bdp/expand_src" old_decomp_dir="/home/moiz/Source/little_rocket_man/bdp/src">
         <!-- Definition directory list -->
         <!-- Component file list -->
-        <component_file path="/home/moiz/Source/little_rocket_man" name="Asteroids" suffix="mch" user="moiz">
-            <component name="Asteroids" type="specification" />
+        <component_file path="/home/moiz/Source/little_rocket_man" name="CollisionTracker" suffix="mch" user="moiz">
+            <component name="CollisionTracker" type="specification" />
         </component_file>
         <component_file path="/home/moiz/Source/little_rocket_man" name="GameInfo" suffix="mch" user="moiz">
             <component name="GameInfo" type="specification" />
         </component_file>
-        <component_file path="/home/moiz/Source/little_rocket_man" name="Mission" suffix="mch" user="moiz">
-            <component name="Mission" type="specification" />
+        <component_file path="/home/moiz/Source/little_rocket_man" name="RouteTracker" suffix="mch" user="moiz">
+            <component name="RouteTracker" type="specification" />
         </component_file>
-        <component_file path="/home/moiz/Source/little_rocket_man" name="Space" suffix="mch" user="moiz">
-            <component name="Space" type="specification" />
+        <component_file path="/home/moiz/Source/little_rocket_man" name="SpaceInfo" suffix="mch" user="moiz">
+            <component name="SpaceInfo" type="specification" />
         </component_file>
         <component_file path="/home/moiz/Source/little_rocket_man" name="Spaceship" suffix="mch" user="moiz">
             <component name="Spaceship" type="specification" />
         </component_file>
-        <component_file path="/home/moiz/Source/little_rocket_man" name="Test" suffix="mch" user="moiz">
-            <component name="Test" type="specification" />
+        <component_file path="/home/moiz/Source/little_rocket_man" name="SpaceshipFull" suffix="mch" user="moiz">
+            <component name="SpaceshipFull" type="specification" />
         </component_file>
     </project>
 </db_xml>

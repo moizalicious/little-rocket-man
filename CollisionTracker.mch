@@ -1,12 +1,9 @@
-/* Asteroids
+/* CollisionTracker
  * Author: Moiz Mansoor Ali
- * Creation date: 12/7/18
+ * Creation date: 12/8/18
  */
- 
- // Helps track the number of collisions
- 
- // TODO rename to CollisionTracker
-MACHINE Asteroids
+
+MACHINE CollisionTracker
 
 VARIABLES
     asteroid_collisions

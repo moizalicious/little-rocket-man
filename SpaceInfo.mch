@@ -1,12 +1,9 @@
-/* Space
+/* SpaceInfo
  * Author: Moiz Mansoor Ali
- * Creation date: 12/7/18
+ * Creation date: 12/8/18
  */
 
-// Contains information of the space and asteroid locations
-
-// TODO rename to SpaceInfo
-MACHINE Space
+MACHINE SpaceInfo
 
 CONSTANTS
     space,
