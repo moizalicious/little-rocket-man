@@ -1,10 +1,5 @@
 digraph {
-CollisionTracker [ label=" CollisionTracker " shape= box ]
 Game [ label=" Game " shape= box ]
-GameInfo [ label=" GameInfo " shape= box ]
-RouteTracker [ label=" RouteTracker " shape= box ]
-SpaceInfo [ label=" SpaceInfo " shape= box ]
 Spaceship [ label=" Spaceship " shape= box ]
-SpaceshipFull [ label=" SpaceshipFull " shape= box ]
 
 }
