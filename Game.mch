@@ -2,6 +2,7 @@
  * Author: Moiz Mansoor Ali
  * Creation date: 12/13/18
  */
+
 MACHINE Game
 
 SETS
@@ -35,7 +36,7 @@ PROPERTIES
     asteroids <: space &
     asteroids = {
                     (7,1),(3,2),(11,2),(8,3),(5,4),(3,5),
-                    (7,5),(12,5),(10,6),(6,7),(7,7)    
+                    (7,5),(12,5),(10,6),(6,7),(7,7)  
                 }
     &
     starbase : space &

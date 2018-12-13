@@ -5,9 +5,6 @@
 
 MACHINE Spaceship INCLUDES Game PROMOTES GameStatus
 
-// declaration of the properties the machine’s parameters must satisfy
-// CONSTRAINTS
-
 VARIABLES
     positionX,
     positionY,
