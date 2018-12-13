@@ -7,6 +7,9 @@
         <component_file path="/home/moiz/Source/little_rocket_man" name="CollisionTracker" suffix="mch" user="moiz">
             <component name="CollisionTracker" type="specification" />
         </component_file>
+        <component_file path="/home/moiz/Source/little_rocket_man" name="Game" suffix="mch" user="moiz">
+            <component name="Game" type="specification" />
+        </component_file>
         <component_file path="/home/moiz/Source/little_rocket_man" name="GameInfo" suffix="mch" user="moiz">
             <component name="GameInfo" type="specification" />
         </component_file>
