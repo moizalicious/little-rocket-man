@@ -24,7 +24,7 @@ INVARIANT
 INITIALISATION
     positionX := min(dom(space)) ||
     positionY := min(ran(space)) ||
-    power := 200 ||
+    power := 100 ||
     asteroid_collisions := 0 ||
     moves_completed := 1 ||
     mission_route := {1} * {(1,1)}

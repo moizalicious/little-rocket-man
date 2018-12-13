@@ -1,0 +1,75 @@
+digraph history {
+graph [nodesep=1.5, ranksep=1.5];
+0 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="space = \{(1\|-\>1),(1\|-\>2),(1\|-\>3),(1\|-\>4),(1\|-\>5),(1\|-\>6),(1\|-\>7),(2\|-\>1),(2\|-\>2),(2\|-\>3),(2\|-\>4),(2\|-\>5),(2\|-\>6),(2\|-\>7),(3\|-\>1),(3\|-\>2),(3\|-\>3),(3\|-\>4),(3\|-\>5),(3\|-\>6),(3\|-\>7),(4\|-\>1),(4\|-\>2),(4\|-\>3),(4\|-\>4),(4\|-\>5),(4\|-\>6),(4\|-\>7),(5\|-\>1),(5\|-\>2),(5\|-\>3),(5\|-\>4),(5\|-\>5),(5\|-\>6),(5\|-\>7),(6\|-\>1),(6\|-\>2),(6\|-\>3),(6\|-\>4),(6\|-\>5)...,asteroids = \{(3\|-\>2),(3\|-\>5),(5\|-\>4),(6\|-\>7),(7\|-\>1),(7\|-\>5),(7\|-\>7),(8\|-\>3),(10\|-\>6),(11\|-\>2),(12\|-\>5)\},starbase = (6\|-\>4)"];
+
+1 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 1,positionY = 1,power = 100,\nasteroid_collisions = 0,moves_completed = 1,mission_route(1) = (1\|-\>1),\ngame_status = playing"];
+
+2 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 1,positionY = 2,power = 95,\nasteroid_collisions = 0,moves_completed = 2,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),game_status = playing"];
+
+77 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 2,positionY = 2,power = 90,\nasteroid_collisions = 0,moves_completed = 3,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),game_status = playing"];
+
+149 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 2,positionY = 3,power = 85,\nasteroid_collisions = 0,moves_completed = 4,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\ngame_status = playing"];
+
+226 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 3,positionY = 3,power = 80,\nasteroid_collisions = 0,moves_completed = 5,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),game_status = playing"];
+
+300 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 3,positionY = 3,power = 70,\nasteroid_collisions = 1,moves_completed = 5,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),game_status = playing"];
+
+377 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 2,positionY = 3,power = 65,\nasteroid_collisions = 1,moves_completed = 6,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),game_status = playing"];
+
+450 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 2,positionY = 2,power = 60,\nasteroid_collisions = 1,moves_completed = 7,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\ngame_status = playing"];
+
+527 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 1,positionY = 2,power = 55,\nasteroid_collisions = 1,moves_completed = 8,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\nmission_route(8) = (1\|-\>2),game_status = playing"];
+
+600 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="repeated (5)\npositionX = 1,positionY = 1,power = 50,\nasteroid_collisions = 1,moves_completed = 9,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\nmission_route(8) = (1\|-\>2),mission_route(9) = (1\|-\>1),game_status = playing"];
+
+694 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="positionX = 12,positionY = 2,power = 30,\nasteroid_collisions = 1,moves_completed = 10,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\nmission_route(8) = (1\|-\>2),mission_route(9) = (1\|-\>1),mission_route(10) = (12\|-\>2),\ngame_status = playing"];
+
+774 [shape=box, color="#99BF38", fontsize=12, penwidth=2, label="repeated (7)\npositionX = 6,positionY = 3,power = 10,\nasteroid_collisions = 1,moves_completed = 11,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\nmission_route(8) = (1\|-\>2),mission_route(9) = (1\|-\>1),mission_route(10) = (12\|-\>2),\nmission_route(11) = (6\|-\>3),game_status = playing"];
+
+820 [shape=doubleoctagon, color="#99BF38", fontsize=12, penwidth=2, label="repeated (5)\npositionX = 6,positionY = 4,power = 5,\nasteroid_collisions = 1,moves_completed = 12,mission_route(1) = (1\|-\>1),\nmission_route(2) = (1\|-\>2),mission_route(3) = (2\|-\>2),mission_route(4) = (2\|-\>3),\nmission_route(5) = (3\|-\>3),mission_route(6) = (2\|-\>3),mission_route(7) = (2\|-\>2),\nmission_route(8) = (1\|-\>2),mission_route(9) = (1\|-\>1),mission_route(10) = (12\|-\>2),\nmission_route(11) = (6\|-\>3),mission_route(12) = (6\|-\>4),game_status = won"];
+
+root [shape=invtriangle, color="#99BF38", fontsize=12, penwidth=2, label="root"];
+
+root -> 0 [style = dotted, color = black, label="SETUP_CONSTANTS", fontsize=12];
+
+0 -> 1 [color = "#006391", label="INITIALISATION", fontsize=12];
+
+1 -> 2 [color = "#006391", label="MoveUp--\>movement_successful,no_error", fontsize=12];
+
+2 -> 77 [color = "#006391", label="MoveForward--\>movement_successful,no_error", fontsize=12];
+
+77 -> 149 [color = "#006391", label="MoveUp--\>movement_successful,no_error", fontsize=12];
+
+149 -> 226 [color = "#006391", label="MoveForward--\>movement_successful,no_error", fontsize=12];
+
+226 -> 300 [color = "#006391", label="MoveDown--\>movement_failed,asteroid_hit", fontsize=12];
+
+300 -> 377 [color = "#006391", label="MoveBackward--\>movement_successful,no_error", fontsize=12];
+
+377 -> 450 [color = "#006391", label="MoveDown--\>movement_successful,no_error", fontsize=12];
+
+450 -> 527 [color = "#006391", label="MoveBackward--\>movement_successful,no_error", fontsize=12];
+
+527 -> 600 [color = "#006391", label="MoveDown--\>movement_successful,no_error", fontsize=12];
+
+
+
+
+
+600 -> 694 [color = "#006391", label="EngageWarpDrive(12,2)--\>movement_successful,no_err\nor", fontsize=12];
+
+694 -> 774 [color = "#006391", label="EngageWarpDrive(6,3)--\>movement_successful,no_erro\nr", fontsize=12];
+
+
+
+
+
+
+
+774 -> 820 [color = "#006391", label="MoveUp--\>movement_successful,no_error", fontsize=12];
+
+
+
+
+
+}
