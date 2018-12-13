@@ -1,36 +1,42 @@
 /* Spaceship
  * Author: Moiz Mansoor Ali
- * Creation date: 12/7/18
+ * Creation date: 12/4/18
  */
 
-MACHINE Spaceship INCLUDES RouteTracker, CollisionTracker, GameInfo 
-    PROMOTES MissionRoute, GameStatus
+MACHINE Spaceship INCLUDES Game PROMOTES GameStatus
 
-SETS
-    MOVEMENT_MESSAGE = {movement_successful, movement_failed};
-    ERROR_MESSAGE = {no_error, insufficient_power, out_of_bounds, 
-                    asteroid_hit, asteroid_occupied}             
+// declaration of the properties the machine’s parameters must satisfy
+// CONSTRAINTS
 
 VARIABLES
     positionX,
     positionY,
-    power
-    
+    power,
+    asteroid_collisions,
+    moves_completed,
+    mission_route
+
 INVARIANT
     positionX : dom(space) & 
     positionY : ran(space) &
-    power : 0..200
+    power : 0..200 &
+    asteroid_collisions : 0..100 &
+    moves_completed : 1..200 &
+    mission_route : 1..200 +-> space
 
 INITIALISATION
     positionX := min(dom(space)) ||
     positionY := min(ran(space)) ||
-    power := 200
+    power := 200 ||
+    asteroid_collisions := 0 ||
+    moves_completed := 1 ||
+    mission_route := {1} * {(1,1)}
 
-OPERATIONS    
+OPERATIONS  
     outcome, error <-- MoveUp = 
         PRE
             game_status = playing
-        THEN
+        THEN       
             IF (positionY = max(ran(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
@@ -39,12 +45,12 @@ OPERATIONS
                     power := power - 10 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
@@ -53,21 +59,24 @@ OPERATIONS
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    SetGameStatus(won) ||              
-                    UpdateMissionRoute(positionX, positionY + 1)                
+                    SetGameStatus(won) ||                
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1                
                 ELSIF (power = 5) THEN
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    UpdateMissionRoute(positionX, positionY + 1)                
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1                
                 ELSE
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    UpdateMissionRoute(positionX, positionY + 1)                
+                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    moves_completed := moves_completed + 1                
                 END                
             ELSE
                 power := 0 ||
@@ -84,17 +93,17 @@ OPERATIONS
             IF (positionY = min(ran(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
-            ELSIF ((positionX, positionY - 1) : asteroids) THEN
+            ELSIF ((positionX, positionY - 1) : asteroids) THEN            
                 IF (power > 10) THEN
                     power := power - 10 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
@@ -104,20 +113,23 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    UpdateMissionRoute(positionX, positionY - 1)                
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1                
                 ELSIF (power = 5) THEN
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
-                    SetGameStatus(lost) ||                
-                    UpdateMissionRoute(positionX, positionY - 1)
+                    SetGameStatus(lost) ||            
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1
                 ELSE
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    UpdateMissionRoute(positionX, positionY - 1)                                
+                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    moves_completed := moves_completed + 1                                
                 END                
             ELSE
                 power := 0 ||
@@ -139,12 +151,12 @@ OPERATIONS
                     power := power - 10 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
@@ -154,20 +166,23 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    UpdateMissionRoute(positionX + 1, positionY)                             
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 ELSIF (power = 5) THEN
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    UpdateMissionRoute(positionX + 1, positionY)                               
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 ELSE
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    UpdateMissionRoute(positionX + 1, positionY)                             
+                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 END                
             ELSE
                 power := 0 ||
@@ -189,12 +204,12 @@ OPERATIONS
                     power := power - 10 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions
+                    asteroid_collisions := asteroid_collisions + 1
                 ELSE
                     power := 0 ||
                     outcome := movement_failed ||
                     error := asteroid_hit ||
-                    IncrementAsteroidCollisions ||
+                    asteroid_collisions := asteroid_collisions + 1 ||
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
@@ -204,20 +219,23 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    UpdateMissionRoute(positionX - 1, positionY)                                
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 ELSIF (power = 5) THEN
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    UpdateMissionRoute(positionX - 1, positionY)                               
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 ELSE
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    UpdateMissionRoute(positionX - 1, positionY)                               
+                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    moves_completed := moves_completed + 1                                
                 END                
             ELSE
                 power := 0 ||
@@ -232,6 +250,7 @@ OPERATIONS
             game_status = playing &
             xx : dom(space) &
             yy : ran(space) &
+            (xx, yy) /= (positionX, positionY) &
             (xx, yy) /= starbase
         THEN
             IF (power > 20) THEN
@@ -244,7 +263,8 @@ OPERATIONS
                     positionY := yy ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    UpdateMissionRoute(xx, yy)                
+                    mission_route(moves_completed + 1) := (xx, yy) ||
+                    moves_completed := moves_completed + 1                
                 END                
             ELSE 
                 outcome := movement_failed ||
@@ -258,7 +278,12 @@ OPERATIONS
             currentPower := power ||
             asteroidCollisions := asteroid_collisions
         END;        
-            
+    
+    missionRoute <-- MissionRoute =
+        BEGIN
+            missionRoute := mission_route
+        END;        
+    
     answer <-- DockedAtStarbase =
         BEGIN
             IF ((positionX, positionY) = starbase) THEN
@@ -266,6 +291,6 @@ OPERATIONS
             ELSE
                 answer := FALSE
             END            
-        END       
-         
+        END      
+      
 END
