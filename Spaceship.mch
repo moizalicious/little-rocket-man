@@ -27,7 +27,7 @@ INITIALISATION
     power := 200 ||
     asteroid_collisions := 0 ||
     moves_completed := 1 ||
-    mission_route := {1} * {(1,1)}
+    mission_route := {1} * {(1 |-> 1)}
 
 OPERATIONS  
     outcome, error <-- MoveUp = 
@@ -37,7 +37,7 @@ OPERATIONS
             IF (positionY = max(ran(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
-            ELSIF ((positionX, positionY + 1) : asteroids) THEN
+            ELSIF ((positionX |-> positionY + 1) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
                     outcome := movement_failed ||
@@ -51,13 +51,13 @@ OPERATIONS
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
-                IF ((positionX, positionY + 1) = starbase) THEN
+                IF ((positionX |-> positionY + 1) = starbase) THEN
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY + 1) ||
                     moves_completed := moves_completed + 1                
                 ELSIF (power = 5) THEN
                     positionY := positionY + 1 ||
@@ -65,14 +65,14 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY + 1) ||
                     moves_completed := moves_completed + 1                
                 ELSE
                     positionY := positionY + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    mission_route(moves_completed + 1) := (positionX, positionY + 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY + 1) ||
                     moves_completed := moves_completed + 1                
                 END                
             ELSE
@@ -90,7 +90,7 @@ OPERATIONS
             IF (positionY = min(ran(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
-            ELSIF ((positionX, positionY - 1) : asteroids) THEN            
+            ELSIF ((positionX |-> positionY - 1) : asteroids) THEN            
                 IF (power > 10) THEN
                     power := power - 10 ||
                     outcome := movement_failed ||
@@ -104,13 +104,13 @@ OPERATIONS
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
-                IF ((positionX, positionY - 1) = starbase) THEN
+                IF ((positionX |-> positionY - 1) = starbase) THEN
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY - 1) ||
                     moves_completed := moves_completed + 1                
                 ELSIF (power = 5) THEN
                     positionY := positionY - 1 ||
@@ -118,14 +118,14 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||            
-                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY - 1) ||
                     moves_completed := moves_completed + 1
                 ELSE
                     positionY := positionY - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    mission_route(moves_completed + 1) := (positionX, positionY - 1) ||
+                    mission_route(moves_completed + 1) := (positionX |-> positionY - 1) ||
                     moves_completed := moves_completed + 1                                
                 END                
             ELSE
@@ -143,7 +143,7 @@ OPERATIONS
             IF (positionX = max(dom(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
-            ELSIF ((positionX + 1, positionY) : asteroids) THEN
+            ELSIF ((positionX + 1 |-> positionY) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
                     outcome := movement_failed ||
@@ -157,13 +157,13 @@ OPERATIONS
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
-                IF ((positionX + 1, positionY) = starbase) THEN
+                IF ((positionX + 1 |-> positionY) = starbase) THEN
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX + 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 ELSIF (power = 5) THEN
                     positionX := positionX + 1 ||
@@ -171,14 +171,14 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX + 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 ELSE
                     positionX := positionX + 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    mission_route(moves_completed + 1) := (positionX + 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX + 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 END                
             ELSE
@@ -196,7 +196,7 @@ OPERATIONS
             IF (positionX = min(dom(space))) THEN
                 outcome := movement_failed ||
                 error := out_of_bounds
-            ELSIF ((positionX - 1, positionY) : asteroids) THEN
+            ELSIF ((positionX - 1 |-> positionY) : asteroids) THEN
                 IF (power > 10) THEN
                     power := power - 10 ||
                     outcome := movement_failed ||
@@ -210,13 +210,13 @@ OPERATIONS
                     SetGameStatus(lost)
                 END                
             ELSIF (power >= 5) THEN
-                IF ((positionX - 1, positionY) = starbase) THEN
+                IF ((positionX - 1 |-> positionY) = starbase) THEN
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(won) ||                
-                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX - 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 ELSIF (power = 5) THEN
                     positionX := positionX - 1 ||
@@ -224,14 +224,14 @@ OPERATIONS
                     outcome := movement_successful ||
                     error := no_error ||
                     SetGameStatus(lost) ||                
-                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX - 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 ELSE
                     positionX := positionX - 1 ||
                     power := power - 5 ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    mission_route(moves_completed + 1) := (positionX - 1, positionY) ||
+                    mission_route(moves_completed + 1) := (positionX - 1 |-> positionY) ||
                     moves_completed := moves_completed + 1                                
                 END                
             ELSE
@@ -247,11 +247,11 @@ OPERATIONS
             game_status = playing &
             xx : dom(space) &
             yy : ran(space) &
-            (xx, yy) /= (positionX, positionY) &
-            (xx, yy) /= starbase
+            (xx |-> yy) /= (positionX |-> positionY) &
+            (xx |-> yy) /= starbase
         THEN
             IF (power > 20) THEN
-                IF ((xx, yy) : asteroids) THEN
+                IF ((xx |-> yy) : asteroids) THEN
                     outcome := movement_failed ||
                     error := asteroid_occupied
                 ELSE
@@ -260,7 +260,7 @@ OPERATIONS
                     positionY := yy ||
                     outcome := movement_successful ||
                     error := no_error ||                
-                    mission_route(moves_completed + 1) := (xx, yy) ||
+                    mission_route(moves_completed + 1) := (xx |-> yy) ||
                     moves_completed := moves_completed + 1                
                 END                
             ELSE 
@@ -271,7 +271,7 @@ OPERATIONS
     
     currentLocation, currentPower, asteroidCollisions <-- MissionStatus =
         BEGIN
-            currentLocation := (positionX, positionY) ||
+            currentLocation := (positionX |-> positionY) ||
             currentPower := power ||
             asteroidCollisions := asteroid_collisions
         END;        
@@ -283,7 +283,7 @@ OPERATIONS
     
     answer <-- DockedAtStarbase =
         BEGIN
-            IF ((positionX, positionY) = starbase) THEN
+            IF ((positionX |-> positionY) = starbase) THEN
                 answer := TRUE
             ELSE
                 answer := FALSE
